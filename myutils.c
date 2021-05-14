@@ -1,0 +1,132 @@
+#include "raylib.h"
+#include "rlgl.h"
+
+void DrawAxisTarget(Camera camera)
+{
+    DrawLine3D((Vector3){camera.target.x - 1.0f, camera.target.y, camera.target.z}, (Vector3){camera.target.x + 1.0f, camera.target.y, camera.target.z}, RED);
+    DrawSphere((Vector3){camera.target.x + 1.0f, camera.target.y, camera.target.z}, 0.05f, RED);
+    DrawLine3D((Vector3){camera.target.x, camera.target.y - 1.0f, camera.target.z}, (Vector3){camera.target.x, camera.target.y + 1.0f, camera.target.z}, GREEN);
+    DrawSphere((Vector3){camera.target.x, camera.target.y + 1.0f, camera.target.z}, 0.05f, GREEN);
+    DrawLine3D((Vector3){camera.target.x, camera.target.y, camera.target.z - 1.0f}, (Vector3){camera.target.x, camera.target.y, camera.target.z + 1.0f}, BLUE);
+    DrawSphere((Vector3){camera.target.x, camera.target.y, camera.target.z + 1.0f}, 0.05f, BLUE);
+}
+
+// Draw cube
+// NOTE: Cube position is the center position
+void DrawVoxel(Texture2D texture, Rectangle source, Vector3 position, float width, float height, float length, Color color)
+{
+    //Start from DrawTexturePro region
+    float texWidth = (float)texture.width;
+    float texHeight = (float)texture.height;
+
+    bool flipX = false;
+
+    if (source.width < 0) { flipX = true; source.width *= -1; }
+    if (source.height < 0) source.y -= source.height;
+    //End from DrawTexturePro region
+
+    float x = position.x;
+    float y = position.y;
+    float z = position.z;
+
+    rlCheckRenderBatchLimit(36);
+
+
+    //rlPushMatrix();
+        // NOTE: Transformation is applied in inverse order (scale -> rotate -> translate)
+        //rlTranslatef(2.0f, 0.0f, 0.0f);
+        //rlRotatef(45, 0, 1, 0);
+        //rlScalef(2.0f, 2.0f, 2.0f);
+
+        rlBegin(RL_QUADS);
+            rlColor4ub(color.r, color.g, color.b, color.a);
+            // Front Face
+            rlSetTexture(texture.id);
+            rlNormal3f(0.0f, 0.0f, 1.0f);                  // Normal Pointing Towards Viewer
+            if (flipX) rlTexCoord2f((source.x + source.width)/texWidth, source.y/texHeight);
+            else rlTexCoord2f(source.x/texWidth, source.y/texHeight);
+            rlVertex3f(x - width/2, y - height/2, z + length/2);  // Bottom Left Of The Texture and Quad
+            if (flipX) rlTexCoord2f((source.x + source.width)/texWidth, (source.y + source.height)/texHeight);
+            else rlTexCoord2f(source.x/texWidth, (source.y + source.height)/texHeight);
+            rlVertex3f(x + width/2, y - height/2, z + length/2);  // Bottom Right Of The Texture and Quad
+            if (flipX) rlTexCoord2f(source.x/texWidth, (source.y + source.height)/texHeight);
+            else rlTexCoord2f((source.x + source.width)/texWidth, (source.y + source.height)/texHeight);
+            rlVertex3f(x + width/2, y + height/2, z + length/2);  // Top Right Of The Texture and Quad
+            if (flipX) rlTexCoord2f(source.x/texWidth, source.y/texHeight);
+            else rlTexCoord2f((source.x + source.width)/texWidth, source.y/texHeight);
+            rlVertex3f(x - width/2, y + height/2, z + length/2);  // Top Left Of The Texture and Quad
+            // Back Face
+            rlNormal3f(0.0f, 0.0f, - 1.0f);                  // Normal Pointing Away From Viewer
+            if (flipX) rlTexCoord2f((source.x + source.width)/texWidth, (source.y + source.height)/texHeight);
+            else rlTexCoord2f(source.x/texWidth, (source.y + source.height)/texHeight);
+            rlVertex3f(x - width/2, y - height/2, z - length/2);  // Bottom Right Of The Texture and Quad
+            if (flipX) rlTexCoord2f(source.x/texWidth, (source.y + source.height)/texHeight);
+            else rlTexCoord2f((source.x + source.width)/texWidth, (source.y + source.height)/texHeight);
+            rlVertex3f(x - width/2, y + height/2, z - length/2);  // Top Right Of The Texture and Quad
+            if (flipX) rlTexCoord2f(source.x/texWidth, source.y/texHeight);
+            else rlTexCoord2f((source.x + source.width)/texWidth, source.y/texHeight);
+            rlVertex3f(x + width/2, y + height/2, z - length/2);  // Top Left Of The Texture and Quad
+            if (flipX) rlTexCoord2f((source.x + source.width)/texWidth, source.y/texHeight);
+            else rlTexCoord2f(source.x/texWidth, source.y/texHeight);
+            rlVertex3f(x + width/2, y - height/2, z - length/2);  // Bottom Left Of The Texture and Quad
+            // Top Face
+            rlNormal3f(0.0f, 1.0f, 0.0f);                  // Normal Pointing Up
+            if (flipX) rlTexCoord2f(source.x/texWidth, source.y/texHeight);
+            else rlTexCoord2f((source.x + source.width)/texWidth, source.y/texHeight);
+            rlVertex3f(x - width/2, y + height/2, z - length/2);  // Top Left Of The Texture and Quad
+            if (flipX) rlTexCoord2f((source.x + source.width)/texWidth, source.y/texHeight);
+            else rlTexCoord2f(source.x/texWidth, source.y/texHeight);
+            rlVertex3f(x - width/2, y + height/2, z + length/2);  // Bottom Left Of The Texture and Quad
+            if (flipX) rlTexCoord2f((source.x + source.width)/texWidth, (source.y + source.height)/texHeight);
+            else rlTexCoord2f(source.x/texWidth, (source.y + source.height)/texHeight);
+            rlVertex3f(x + width/2, y + height/2, z + length/2);  // Bottom Right Of The Texture and Quad
+            if (flipX) rlTexCoord2f(source.x/texWidth, (source.y + source.height)/texHeight);
+            else rlTexCoord2f((source.x + source.width)/texWidth, (source.y + source.height)/texHeight);
+            rlVertex3f(x + width/2, y + height/2, z - length/2);  // Top Right Of The Texture and Quad
+            // Bottom Face
+            rlNormal3f(0.0f, - 1.0f, 0.0f);                  // Normal Pointing Down
+            if (flipX) rlTexCoord2f(source.x/texWidth, (source.y + source.height)/texHeight);
+            else rlTexCoord2f((source.x + source.width)/texWidth, (source.y + source.height)/texHeight);
+            rlVertex3f(x - width/2, y - height/2, z - length/2);  // Top Right Of The Texture and Quad
+            if (flipX) rlTexCoord2f(source.x/texWidth, source.y/texHeight);
+            else rlTexCoord2f((source.x + source.width)/texWidth, source.y/texHeight);
+            rlVertex3f(x + width/2, y - height/2, z - length/2);  // Top Left Of The Texture and Quad
+            if (flipX) rlTexCoord2f((source.x + source.width)/texWidth, source.y/texHeight);
+            else rlTexCoord2f(source.x/texWidth, source.y/texHeight);
+            rlVertex3f(x + width/2, y - height/2, z + length/2);  // Bottom Left Of The Texture and Quad
+            if (flipX) rlTexCoord2f((source.x + source.width)/texWidth, (source.y + source.height)/texHeight);
+            else rlTexCoord2f(source.x/texWidth, (source.y + source.height)/texHeight);
+            rlVertex3f(x - width/2, y - height/2, z + length/2);  // Bottom Right Of The Texture and Quad
+            // Right face
+            rlNormal3f(1.0f, 0.0f, 0.0f);                  // Normal Pointing Right
+            if (flipX) rlTexCoord2f((source.x + source.width)/texWidth, (source.y + source.height)/texHeight);
+            else rlTexCoord2f(source.x/texWidth, (source.y + source.height)/texHeight);
+            rlVertex3f(x + width/2, y - height/2, z - length/2);  // Bottom Right Of The Texture and Quad
+            if (flipX) rlTexCoord2f(source.x/texWidth, (source.y + source.height)/texHeight);
+            else rlTexCoord2f((source.x + source.width)/texWidth, (source.y + source.height)/texHeight);
+            rlVertex3f(x + width/2, y + height/2, z - length/2);  // Top Right Of The Texture and Quad
+            if (flipX) rlTexCoord2f(source.x/texWidth, source.y/texHeight);
+            else rlTexCoord2f((source.x + source.width)/texWidth, source.y/texHeight);
+            rlVertex3f(x + width/2, y + height/2, z + length/2);  // Top Left Of The Texture and Quad
+            if (flipX) rlTexCoord2f((source.x + source.width)/texWidth, source.y/texHeight);
+            else rlTexCoord2f(source.x/texWidth, source.y/texHeight);
+            rlVertex3f(x + width/2, y - height/2, z + length/2);  // Bottom Left Of The Texture and Quad
+            // Left Face
+            rlNormal3f( - 1.0f, 0.0f, 0.0f);                  // Normal Pointing Left
+            if (flipX) rlTexCoord2f((source.x + source.width)/texWidth, source.y/texHeight);
+            else rlTexCoord2f(source.x/texWidth, source.y/texHeight);
+            rlVertex3f(x - width/2, y - height/2, z - length/2);  // Bottom Left Of The Texture and Quad
+            if (flipX) rlTexCoord2f((source.x + source.width)/texWidth, (source.y + source.height)/texHeight);
+            else rlTexCoord2f(source.x/texWidth, (source.y + source.height)/texHeight);
+            rlVertex3f(x - width/2, y - height/2, z + length/2);  // Bottom Right Of The Texture and Quad
+            if (flipX) rlTexCoord2f(source.x/texWidth, (source.y + source.height)/texHeight);
+            else rlTexCoord2f((source.x + source.width)/texWidth, (source.y + source.height)/texHeight);
+            rlVertex3f(x - width/2, y + height/2, z + length/2);  // Top Right Of The Texture and Quad
+            if (flipX) rlTexCoord2f(source.x/texWidth, source.y/texHeight);
+            else rlTexCoord2f((source.x + source.width)/texWidth, source.y/texHeight);
+            rlVertex3f(x - width/2, y + height/2, z - length/2);  // Top Left Of The Texture and Quad
+        rlEnd();
+    //rlPopMatrix();
+
+    rlSetTexture(0);
+}
