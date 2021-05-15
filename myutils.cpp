@@ -3,10 +3,15 @@
 
 void DrawAxisTarget(Camera camera)
 {
+    // Center - BLACK
+    DrawSphere((Vector3){camera.target.x, camera.target.y, camera.target.z}, 0.05f, BLACK);
+    // X-axis - RED
     DrawLine3D((Vector3){camera.target.x - 1.0f, camera.target.y, camera.target.z}, (Vector3){camera.target.x + 1.0f, camera.target.y, camera.target.z}, RED);
     DrawSphere((Vector3){camera.target.x + 1.0f, camera.target.y, camera.target.z}, 0.05f, RED);
+    // Y-axis - GREEN
     DrawLine3D((Vector3){camera.target.x, camera.target.y - 1.0f, camera.target.z}, (Vector3){camera.target.x, camera.target.y + 1.0f, camera.target.z}, GREEN);
     DrawSphere((Vector3){camera.target.x, camera.target.y + 1.0f, camera.target.z}, 0.05f, GREEN);
+    // Z-axis - BLUE
     DrawLine3D((Vector3){camera.target.x, camera.target.y, camera.target.z - 1.0f}, (Vector3){camera.target.x, camera.target.y, camera.target.z + 1.0f}, BLUE);
     DrawSphere((Vector3){camera.target.x, camera.target.y, camera.target.z + 1.0f}, 0.05f, BLUE);
 }

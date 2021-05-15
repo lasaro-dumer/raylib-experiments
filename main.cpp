@@ -52,7 +52,7 @@ int main()
     Vector3 cubePositionBlack = {0.0f, 2.0f, 0.0f};
     float verticesLength = 1.0f;
     float cameraMovement = 0.1f;
-    Vector3 voxelPosition = {5.0f, 5.0f, 5.0f};
+    Vector3 voxelPosition = {1.0f, 1.0f, 1.0f};
     int voxelFaces[6] = {1, 1, 1, 1, 1, 1};
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
@@ -88,15 +88,15 @@ int main()
             DrawAxisTarget(camera);
             DrawVoxel(cubicmap_atlas, frameRec, voxelPosition, 1.0f, 1.0f, 1.0f, voxelFaces, WHITE);
             DrawCubeWires(voxelPosition, verticesLength, verticesLength, verticesLength, BLACK);
-            DrawCube(cubePosition, verticesLength, verticesLength, verticesLength, RED);
-            DrawCubeWires(cubePosition, verticesLength, verticesLength, verticesLength, MAROON);
-            DrawCube(cubePositionGreen, verticesLength, verticesLength, verticesLength, GREEN);
-            DrawCubeWires(cubePositionGreen, verticesLength, verticesLength, verticesLength, BLACK);
-            DrawCube(cubePositionBlue, verticesLength, verticesLength, verticesLength, BLUE);
-            DrawCubeWires(cubePositionBlue, verticesLength, verticesLength, verticesLength, BLACK);
-            DrawCube(cubePositionBlack, verticesLength, verticesLength, verticesLength, BLACK);
-            DrawCubeWires(cubePositionBlack, verticesLength, verticesLength, verticesLength, WHITE);
-            DrawGrid(10, 1.0f);
+            // DrawCube(cubePosition, verticesLength, verticesLength, verticesLength, RED);
+            // DrawCubeWires(cubePosition, verticesLength, verticesLength, verticesLength, MAROON);
+            // DrawCube(cubePositionGreen, verticesLength, verticesLength, verticesLength, GREEN);
+            // DrawCubeWires(cubePositionGreen, verticesLength, verticesLength, verticesLength, BLACK);
+            // DrawCube(cubePositionBlue, verticesLength, verticesLength, verticesLength, BLUE);
+            // DrawCubeWires(cubePositionBlue, verticesLength, verticesLength, verticesLength, BLACK);
+            // DrawCube(cubePositionBlack, verticesLength, verticesLength, verticesLength, BLACK);
+            // DrawCubeWires(cubePositionBlack, verticesLength, verticesLength, verticesLength, WHITE);
+            DrawGrid(20, 1.0f);
             //DrawTextureRec();
             EndMode3D();
 
